@@ -19,4 +19,4 @@ app.listen(PORT, () => {
 });
 
 app.use("/api/user", userRoute);
-app.use("/api/property", propertyRoute);
+app.use("/api/properties", propertyRoute);
