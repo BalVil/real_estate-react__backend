@@ -1,7 +1,7 @@
 import asyncHandler from "express-async-handler";
 import { prisma } from "../config/prismaConfig.js";
 
-export const createResidency = asyncHandler(async (req, res) => {
+export const createProperty = asyncHandler(async (req, res) => {
   const {
     title,
     description,
@@ -14,7 +14,7 @@ export const createResidency = asyncHandler(async (req, res) => {
   } = req.body.data;
 
   try {
-    const residency = await prisma.property.create({
+    const property = await prisma.property.create({
       data: {
         title,
         description,
@@ -29,33 +29,33 @@ export const createResidency = asyncHandler(async (req, res) => {
 
     res
       .status(201)
-      .send({ message: "Residency created successfully", residency });
+      .send({ message: "Property created successfully", property });
   } catch (error) {
     if (error.code === "P2002") {
-      throw new Error("A residency with the address is already there");
+      throw new Error("A property with the address is already there");
     } else {
       throw new Error(error.message);
     }
   }
 });
 
-export const getAllResidencies = asyncHandler(async (req, res) => {
-  const residencies = await prisma.property.findMany({
+export const getAllProperties = asyncHandler(async (req, res) => {
+  const properties = await prisma.property.findMany({
     orderBy: { createdAt: "desc" },
   });
 
-  res.send(residencies);
+  res.send(properties);
 });
 
-export const getResidency = asyncHandler(async (req, res) => {
+export const getProperty = asyncHandler(async (req, res) => {
   const { id } = req.params;
 
   try {
-    const residency = await prisma.property.findUnique({ where: { id } });
-    if (!residency) {
+    const property = await prisma.property.findUnique({ where: { id } });
+    if (!property) {
       res.status(404).json({ message: "Not found" });
     }
-    res.send(residency);
+    res.send(property);
   } catch (error) {
     throw new Error(error.message);
   }
